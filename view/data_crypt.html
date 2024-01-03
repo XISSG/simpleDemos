@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Encryption/Decryption Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Data Encryption/Decryption Demo</h1>
+
+    <label for="cryptType">Encryption Type:</label>
+    <select id="cryptType">
+        <option value="AES">AES</option>
+        <option value="DES">DES</option>
+        <option value="MD5">MD5</option>
+        <option value="SHA1">SHA1</option>
+        <option value="Base64">Base64</option>
+        <option value="URL">URL</option>
+    </select>
+
+    <label for="rawText">Text:</label>
+    <input type="text" id="rawText" placeholder="Enter text">
+
+    <label for="ctype">Encrypt/Decrypt:</label>
+    <select id="ctype">
+        <option value="encrypt">Encrypt</option>
+        <option value="decrypt">Decrypt</option>
+    </select>
+
+    <label for="keyLen">Key Length (AES/DES Encrypt only):</label>
+    <input type="text" id="keyLen" placeholder="Enter key length">
+
+    <label for="key">Key (AES/DES Decrypt only):</label>
+    <input type="text" id="key" placeholder="Enter key">
+
+    <button onclick="requestData()">Submit</button>
+
+    <div id="result"></div>
+    <script>
+        function requestData() {
+            const cryptType = document.getElementById('cryptType').value;
+            const rawText = document.getElementById('rawText').value;
+            const ctype = document.getElementById('ctype').value;
+            const keyLen = document.getElementById('keyLen').value;
+            const key = document.getElementById('key').value;
+
+            const apiUrl = "http://localhost:8081/api"; // Replace this with your actual API endpoint
+
+            // Construct request data as an object
+            const requestData = {
+                cryptType: cryptType,
+                rawText: rawText,
+                ctype: ctype,
+                keyLen: keyLen,
+                key: key
+            };
+
+            // Make a POST request to the API endpoint
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Parse and display the result
+                    const resultElement = document.getElementById('result');
+                    resultElement.innerHTML = `<strong>Result:</strong><br>`;
+                    resultElement.innerHTML += `<strong>TargetText:</strong> ${data.targetText}<br>`;
+
+                    // Display the Key if it exists in the response
+                    if (data.key) {
+                        resultElement.innerHTML += `<strong>Key:</strong> ${data.key}<br>`;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
