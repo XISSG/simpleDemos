@@ -1,4 +1,4 @@
-# Data Encrypt/Decrypt
+# Data Encrypt/Decrypt(以前选修课做的一个小玩意儿，现在看来太过简陋，当作留恋吧)
 This project is a simple data encrytion and decrytion demo, which include DES, AES encryption/decrption, MD5, SHA1 Hash, Base64 and URL encoding/decoding .
 ## Useage
 ### request method 
